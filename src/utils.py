@@ -207,6 +207,8 @@ def generate_report(report_timestamp, report_id):
                         ):
                             downtime_last_week += 0.5
                             uptime_last_week -= 0.5
+                            if uptime_last_week < 0:
+                                uptime_last_week = 0
 
                             if (
                                 day_of_week
@@ -214,6 +216,8 @@ def generate_report(report_timestamp, report_id):
                             ):
                                 downtime_last_day += 0.5
                                 uptime_last_day -= 0.5
+                                if uptime_last_week < 0:
+                                    uptime_last_week = 0
 
                             if status_row["timestamp_local"] >= (
                                 report_timestamp_local - timedelta(hours=1)
