@@ -16,8 +16,6 @@ def trigger_report():
 
     db.session.add(report)
     db.session.commit()
-
-    # Enqueue the background task
     generate_report_task.delay(rep_timestamp, report.id)
 
     return {"status": "success", "report_id": report.id}
@@ -29,7 +27,6 @@ def get_report(report_id):
 
     if report:
         if report.active:
-            # If the report is active, send the CSV file for download
             csv_filename = report.file_path
             return send_file(
                 csv_filename,
@@ -37,7 +34,6 @@ def get_report(report_id):
                 download_name=f"report_{csv_filename}",
             )
         else:
-            # If the report is not active, return status:running
             return {"status": "running"}
 
     return {"status": "failed", "message": "Report not found"}
