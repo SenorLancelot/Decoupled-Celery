@@ -6,4 +6,4 @@ if __name__ == "__main__":
     with service.app_context():
         db.create_all()
         db.session.commit()
-    service.run(debug=True)
+    service.run(debug=True, port=8080, host="0.0.0.0")
