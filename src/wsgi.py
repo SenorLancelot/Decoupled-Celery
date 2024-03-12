@@ -18,7 +18,7 @@ from tqdm import tqdm
 
 service = Flask(__name__)
 service.config["SQLALCHEMY_DATABASE_URI"] = (
-    "postgresql://postgres:postgres@localhost:5432/resto_db"
+    "postgresql://postgres:example@192.168.1.118:5432/scale"
 )
 db = SQLAlchemy()
 

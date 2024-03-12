@@ -5,7 +5,7 @@ from flask import send_file
 
 from src.wsgi import service, db
 from src.models import Store, BusinessHours, StoreStatus, Report
-from src.celery.tasks import generate_report_task
+
 
 
 @service.route("/trigger_report", methods=["POST"])
