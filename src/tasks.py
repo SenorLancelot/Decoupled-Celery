@@ -1,7 +1,7 @@
 import time
 import random
 
-from celery import Celery, shared_task
+from celery import shared_task, Celery
 
 celery_app = Celery(
     "scale",
@@ -13,8 +13,6 @@ celery_app = Celery(
     result_expires=None,
 )
 
-celery_app.autodiscover_tasks("src.celery.tasks")
-
 
 @shared_task(name="addTask")  # Named task
 def add(x, y):
@@ -22,12 +20,3 @@ def add(x, y):
     time.sleep(10 * random.random())  # Simulate a long task
     print("Task Add done")
     return x + y
-
-
-#
-# @celery_app.task(name="addTask")  # Named task
-# def add(x, y):
-#     print("Task Add started")
-#     time.sleep(10 * random.random())  # Simulate a long task
-#     print("Task Add done")
-#     return x + y

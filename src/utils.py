@@ -5,6 +5,7 @@ import pytz
 import pandas as pd
 from tqdm import tqdm
 from src.models import Store, BusinessHours, StoreStatus, Report
+from celery import shared_task
 
 
 def normalize_db():
@@ -52,6 +53,7 @@ def truncate_timestamp(timestamp_str):
     return None
 
 
+@shared_task()
 def generate_report(report_timestamp, report_id):
 
     normalize_db()

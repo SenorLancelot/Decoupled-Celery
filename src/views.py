@@ -1,11 +1,14 @@
-from datetime import datetime
+import time, datetime
+import random
 
 import pytz
 from flask import send_file
 
+from src.celery.start import celery_app
+from src.utils import generate_report
 from src.wsgi import service, db
 from src.models import Store, BusinessHours, StoreStatus, Report
-
+from src.tasks import celery_app
 
 
 @service.route("/trigger_report", methods=["POST"])
@@ -16,7 +19,7 @@ def trigger_report():
 
     db.session.add(report)
     db.session.commit()
-    generate_report_task.delay(rep_timestamp, report.id)
+    generate_report(rep_timestamp, report.id)
 
     return {"status": "success", "report_id": report.id}
 
@@ -37,3 +40,24 @@ def get_report(report_id):
             return {"status": "running"}
 
     return {"status": "failed", "message": "Report not found"}
+
+
+@service.route("/", methods=["GET"])
+def index():
+    return {"status": "healthy"}
+
+
+@service.route("/add", methods=["GET"])
+def add():
+    num_tasks = 10
+    tasks = []
+    for i in range(num_tasks):
+        time.sleep(2 * random.random())  # Random delay
+        tasks.append(celery_app.send_task("addTask", (i, 3)))  # Send task by name
+        print("Sent task:", i)
+
+    for task in tasks:
+        result = task.get()
+        print("Received result:", result)
+
+    return {"status": "success", "message": "Tasks completed"}
