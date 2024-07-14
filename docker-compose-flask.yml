@@ -4,22 +4,14 @@ services:
   flask:
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-Flask
     ports:
-      - "5000:5000"
+      - "8000:8000"
     environment:
       - FLASK_APP=src.server.start
       - FLASK_ENV=development
-    depends_on:
-      - postgres
+    
     volumes:
       - ./src:/app/src
 
-  postgres:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: your_username
-      POSTGRES_PASSWORD: your_password
-      POSTGRES_DB: your_database_name
+  

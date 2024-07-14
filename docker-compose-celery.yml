@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   celery_worker:
-    build: .
-    command: sh -c "while ! nc -z redis 6379; do sleep 1; done && celery -A src.celery.tasks worker --loglevel=info"
+    build:
+      context: .
+      dockerfile: Dockerfile-Celery
+#    command: sh -c "/bin/bash"
     volumes:
-      - ./src:/app/src
+      - ./src:/src
